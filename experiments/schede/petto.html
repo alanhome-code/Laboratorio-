@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petto</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<h1>🧱 Petto</h1>
+
+<div class="card">
+  <h2>Panca Piana</h2>
+  <div class="controls">
+    <button onclick="chg('panca',-2)">−</button>
+    <span id="panca" class="value">60</span>
+    <button onclick="chg('panca',2)">+</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Panca Inclinata</h2>
+  <div class="controls">
+    <button onclick="chg('incl',-2)">−</button>
+    <span id="incl" class="value">40</span>
+    <button onclick="chg('incl',2)">+</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Croci</h2>
+  <div class="controls">
+    <button onclick="chg('croci',-2)">−</button>
+    <span id="croci" class="value">20</span>
+    <button onclick="chg('croci',2)">+</button>
+  </div>
+</div>
+
+<a class="card" href="../allenamenti.html">⬅ Allenamenti</a>
+
+<script>
+function chg(id,v){
+  const el=document.getElementById(id);
+  const val=Math.max(0,(+el.textContent||0)+v);
+  el.textContent=val;
+  localStorage.setItem("petto_"+id,val);
+}
+
+document.querySelectorAll(".value").forEach(el=>{
+  const v=localStorage.getItem("petto_"+el.id);
+  if(v) el.textContent=v;
+});
+</script>
+
+</body>
+</html>
