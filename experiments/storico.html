@@ -15,26 +15,37 @@
 
 <a class="card" href="../index.html">⬅ Dashboard</a>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const list = document.getElementById("list");
+const container=document.getElementById("list");
 
-["petto"].forEach(schema=>{
-  const data = JSON.parse(localStorage.getItem("storico_"+schema) || "[]");
+["petto","spalle","gambe"].forEach(schema=>{
+  const data=JSON.parse(localStorage.getItem("storico_"+schema)||"[]");
+  if(data.length<2) return;
 
-  if(!data.length) return;
-
-  const card = document.createElement("div");
+  const card=document.createElement("div");
   card.className="card";
-  card.innerHTML = `<h2>${schema.toUpperCase()}</h2>`;
+  card.innerHTML=`<h2>${schema.toUpperCase()}</h2><canvas></canvas>`;
+  container.appendChild(card);
 
-  data.slice().reverse().forEach(w=>{
-    const row = document.createElement("p");
-    row.textContent =
-      `${w.date} → Panca ${w.panca} | Incl ${w.incl} | Croci ${w.croci}`;
-    card.appendChild(row);
+  const ctx=card.querySelector("canvas");
+
+  const labels=data.map(d=>d.date);
+  const values=Object.keys(data[0])
+    .filter(k=>!["date","scheda"].includes(k))
+    .map(k=>data.map(d=>+d[k]));
+
+  new Chart(ctx,{
+    type:"line",
+    data:{
+      labels,
+      datasets:values.map((v,i)=>({
+        label:Object.keys(data[0])[i+2],
+        data:v,
+        tension:.3
+      }))
+    }
   });
-
-  list.appendChild(card);
 });
 </script>
 
