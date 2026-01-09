@@ -1,1 +1,134 @@
-<h1>Timer in arrivo</h1>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer Sveglia</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+/* Card timer */
+.timer-card {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #1e293b;
+  color: #e5e7eb;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  font-family: monospace;
+}
+
+/* Tempo digitale */
+#display {
+  font-size: 48px;
+  margin: 20px 0;
+  letter-spacing: 2px;
+}
+
+/* Pulsanti */
+.btn {
+  padding: 12px 20px;
+  margin: 5px;
+  border-radius: 12px;
+  border: none;
+  background: #22c55e;
+  color: #022c22;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Input tempo */
+.time-input {
+  width: 60px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+</style>
+</head>
+<body>
+
+<div class="timer-card">
+  <h1>⏱ Timer Sveglia</h1>
+
+  <div>
+    <input type="number" id="minutes" class="time-input" min="0" value="0"> min
+    <input type="number" id="seconds" class="time-input" min="0" max="59" value="30"> sec
+  </div>
+
+  <div id="display">00:30</div>
+
+  <div>
+    <button class="btn" id="startBtn">Start</button>
+    <button class="btn" id="pauseBtn">Pausa</button>
+    <button class="btn" id="resetBtn">Reset</button>
+  </div>
+
+  <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+</div>
+
+<script>
+let totalSeconds = 30;
+let timerInterval = null;
+const display = document.getElementById("display");
+const alarmSound = document.getElementById("alarmSound");
+
+function updateDisplay(sec){
+  let m = Math.floor(sec / 60);
+  let s = sec % 60;
+  display.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// Leggi input iniziale
+function readInput(){
+  const m = parseInt(document.getElementById("minutes").value) || 0;
+  const s = parseInt(document.getElementById("seconds").value) || 0;
+  totalSeconds = m*60 + s;
+  updateDisplay(totalSeconds);
+}
+
+readInput();
+
+// Start timer
+document.getElementById("startBtn").onclick = () => {
+  if(timerInterval) return; // evita duplicati
+  readInput();
+  timerInterval = setInterval(() => {
+    if(totalSeconds <= 0){
+      clearInterval(timerInterval);
+      timerInterval = null;
+      alarmSound.play();
+      return;
+    }
+    totalSeconds--;
+    updateDisplay(totalSeconds);
+  },1000);
+}
+
+// Pausa timer
+document.getElementById("pauseBtn").onclick = () => {
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+// Reset timer
+document.getElementById("resetBtn").onclick = () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  readInput();
+}
+</script>
+
+</body>
+</html>
