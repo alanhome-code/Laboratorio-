@@ -8,6 +8,11 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#22c55e">
 </head>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
 <body>
 
 <h1>🧪 Laboratorio</h1>
