@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spalle</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+
+<h1>🏹 Spalle</h1>
+
+<div class="card">
+  <h2>Military Press</h2>
+  <div class="controls">
+    <button onclick="chg('military',-2)">−</button>
+    <span id="military" class="value">40</span>
+    <button onclick="chg('military',2)">+</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Alzate Laterali</h2>
+  <div class="controls">
+    <button onclick="chg('laterali',-2)">−</button>
+    <span id="laterali" class="value">12</span>
+    <button onclick="chg('laterali',2)">+</button>
+  </div>
+</div>
+
+<button class="btn-main" onclick="saveWorkout()">💾 Salva allenamento</button>
+<a class="card" href="../allenamenti.html">⬅ Allenamenti</a>
+
+<script>
+const SCHEMA="spalle";
+
+function chg(id,v){
+  const el=document.getElementById(id);
+  const val=Math.max(0,(+el.textContent||0)+v);
+  el.textContent=val;
+  localStorage.setItem(SCHEMA+"_"+id,val);
+}
+
+document.querySelectorAll(".value").forEach(el=>{
+  const v=localStorage.getItem(SCHEMA+"_"+el.id);
+  if(v) el.textContent=v;
+});
+
+function saveWorkout(){
+  const data={
+    date:new Date().toISOString().slice(0,10),
+    scheda:SCHEMA,
+    military:military.textContent,
+    laterali:laterali.textContent
+  };
+
+  const key="storico_"+SCHEMA;
+  const h=JSON.parse(localStorage.getItem(key)||"[]");
+  h.push(data);
+  localStorage.setItem(key,JSON.stringify(h));
+  alert("Allenamento salvato 💪");
+}
+</script>
+
+</body>
+</html>
