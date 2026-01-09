@@ -1,0 +1,14 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 20px;
+}
+
+button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: #22c55e;
+  font-size: 16px;
+}
