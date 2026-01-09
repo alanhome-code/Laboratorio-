@@ -45,17 +45,36 @@
 <a class="card" href="../allenamenti.html">⬅ Allenamenti</a>
 
 <script>
+const SCHEMA = "petto";
+
 function chg(id,v){
   const el=document.getElementById(id);
   const val=Math.max(0,(+el.textContent||0)+v);
   el.textContent=val;
-  localStorage.setItem("petto_"+id,val);
+  localStorage.setItem(SCHEMA+"_"+id,val);
 }
 
 document.querySelectorAll(".value").forEach(el=>{
-  const v=localStorage.getItem("petto_"+el.id);
+  const v=localStorage.getItem(SCHEMA+"_"+el.id);
   if(v) el.textContent=v;
 });
+
+function saveWorkout(){
+  const data = {
+    date: new Date().toISOString().slice(0,10),
+    scheda: SCHEMA,
+    panca: document.getElementById("panca").textContent,
+    incl: document.getElementById("incl").textContent,
+    croci: document.getElementById("croci").textContent
+  };
+
+  const key = "storico_"+SCHEMA;
+  const history = JSON.parse(localStorage.getItem(key) || "[]");
+  history.push(data);
+  localStorage.setItem(key, JSON.stringify(history));
+
+  alert("Allenamento salvato 💪");
+}
 </script>
 
 </body>
