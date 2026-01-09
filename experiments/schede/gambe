@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gambe</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+
+<h1>🦵 Gambe</h1>
+
+<div class="card">
+  <h2>Squat</h2>
+  <div class="controls">
+    <button onclick="chg('squat',-5)">−</button>
+    <span id="squat" class="value">80</span>
+    <button onclick="chg('squat',5)">+</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Leg Press</h2>
+  <div class="controls">
+    <button onclick="chg('press',-10)">−</button>
+    <span id="press" class="value">140</span>
+    <button onclick="chg('press',10)">+</button>
+  </div>
+</div>
+
+<button class="btn-main" onclick="saveWorkout()">💾 Salva allenamento</button>
+<a class="card" href="../allenamenti.html">⬅ Allenamenti</a>
+
+<script>
+const SCHEMA="gambe";
+
+function chg(id,v){
+  const el=document.getElementById(id);
+  const val=Math.max(0,(+el.textContent||0)+v);
+  el.textContent=val;
+  localStorage.setItem(SCHEMA+"_"+id,val);
+}
+
+document.querySelectorAll(".value").forEach(el=>{
+  const v=localStorage.getItem(SCHEMA+"_"+el.id);
+  if(v) el.textContent=v;
+});
+
+function saveWorkout(){
+  const data={
+    date:new Date().toISOString().slice(0,10),
+    scheda:SCHEMA,
+    squat:squat.textContent,
+    press:press.textContent
+  };
+
+  const key="storico_"+SCHEMA;
+  const h=JSON.parse(localStorage.getItem(key)||"[]");
+  h.push(data);
+  localStorage.setItem(key,JSON.stringify(h));
+  alert("Allenamento salvato 💪");
+}
+</script>
+
+</body>
+</html>
