@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storico</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<h1>📊 Storico Allenamenti</h1>
+
+<div id="list"></div>
+
+<a class="card" href="../index.html">⬅ Dashboard</a>
+
+<script>
+const list = document.getElementById("list");
+
+["petto"].forEach(schema=>{
+  const data = JSON.parse(localStorage.getItem("storico_"+schema) || "[]");
+
+  if(!data.length) return;
+
+  const card = document.createElement("div");
+  card.className="card";
+  card.innerHTML = `<h2>${schema.toUpperCase()}</h2>`;
+
+  data.slice().reverse().forEach(w=>{
+    const row = document.createElement("p");
+    row.textContent =
+      `${w.date} → Panca ${w.panca} | Incl ${w.incl} | Croci ${w.croci}`;
+    card.appendChild(row);
+  });
+
+  list.appendChild(card);
+});
+</script>
+
+</body>
+</html>
