@@ -76,3 +76,26 @@ body{
 h2{
   margin:0 0 6px 0;
 }
+
+.controls{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+}
+
+.controls button{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  border:none;
+  background:#22c55e;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.value{
+  font-size:22px;
+  min-width:50px;
+  text-align:center;
+}
